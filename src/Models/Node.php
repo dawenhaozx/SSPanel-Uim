@@ -61,6 +61,12 @@ final class Node extends Model
         };
     }
 
+    public function getConnectionTypeAttribute(): int
+    {
+        // 0 = IPv4, 1 = IPv6, 2 = DualStack
+        return $this->ipv6 !== '::1' && $this->ipv4 !== '127.0.0.1' ? 2 : ($this->ipv4 !== '127.0.0.1' ? 0 : 1);
+    }
+
     /**
      * 节点是否显示和隐藏
      */
@@ -78,6 +84,7 @@ final class Node extends Model
             0 => 'Shadowsocks',
             1 => 'Shadowsocks2022',
             2 => 'TUIC',
+            3 => 'WireGuard',
             11 => 'Vmess',
             14 => 'Trojan',
             default => '未知',

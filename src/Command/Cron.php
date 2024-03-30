@@ -56,18 +56,22 @@ EOL;
         ) {
             $jobs->cleanDb();
             $jobs->resetNodeBandwidth();
-            $jobs->resetFreeUserTraffic();
+            $jobs->resetFreeUserBandwidth();
             $jobs->sendDailyTrafficReport();
 
             if (Config::obtain('enable_detect_inactive_user')) {
                 $jobs->detectInactiveUser();
             }
 
+            if (Config::obtain('remove_inactive_user_link_and_invite')) {
+                $jobs->removeInactiveUserLinkAndInvite();
+            }
+
             if (Config::obtain('telegram_diary')) {
                 $jobs->sendTelegramDiary();
             }
 
-            $jobs->resetTodayTraffic();
+            $jobs->resetTodayBandwidth();
 
             if (Config::obtain('telegram_daily_job')) {
                 $jobs->sendTelegramDailyJob();

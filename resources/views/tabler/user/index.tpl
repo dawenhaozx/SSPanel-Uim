@@ -379,25 +379,8 @@
                                 </div>
                                 <div class="tab-pane" id="ios">
                                     <p>
-                                        适用于 Clash 兼容客户端的订阅：<code>{$UniversalSub}/clash</code>
-                                    </p>
-                                    <p>
                                         适用于 sing-box 的订阅：<code>{$UniversalSub}/singbox</code>
                                     </p>
-                                    <div class="btn-list justify-content-start">
-                                        <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank"
-                                           class="btn btn-azure">
-                                            购买 Stash
-                                        </a>
-                                        <a data-clipboard-text="{$UniversalSub}/clash"
-                                           class="copy btn btn-primary">
-                                            复制 Clash 订阅链接
-                                        </a>
-                                        <a href="stash://install-config?url={$UniversalSub}/clash&name={$config['appName']}"
-                                           class="btn btn-indigo">
-                                            导入 Stash
-                                        </a>
-                                    </div>
                                     <div class="btn-list justify-content-start my-2">
                                         <a href="https://apps.apple.com/app/sing-box/id6451272673" target="_blank"
                                            class="btn btn-azure">
@@ -563,18 +546,14 @@
                                         <button id="check-in" class="btn btn-primary ms-auto" disabled>已签到</button>
                                     {else}
                                         {if $public_setting['enable_checkin_captcha']}
-                                            {include file='captcha_div.tpl'}
+                                            {include file='captcha/div.tpl'}
                                         {/if}
                                         <button id="check-in" class="btn btn-primary ms-auto"
-                                                hx-post="/user/checkin" hx-swap="none"
+                                                hx-post="/user/checkin" hx-swap="none" hx-vals='js:{
                                                 {if $public_setting['enable_checkin_captcha']}
-                                                    {if $public_setting['captcha_provider'] === 'turnstile'}
-                                                        hx-vals='js:{ turnstile: document.querySelector("[name=cf-turnstile-response]").value }'
-                                                    {/if}
-                                                    {if $public_setting['captcha_provider'] === 'geetest'}
-                                                        hx-vals='js:{ geetest: geetest_result }'
-                                                    {/if}
-                                                {/if}>
+                                                    {include file='captcha/ajax.tpl'}
+                                                {/if}
+                                                }'>
                                             签到
                                         </button>
                                     {/if}
@@ -588,7 +567,7 @@
     </div>
 
     {if $public_setting['enable_checkin_captcha'] && $user->isAbleToCheckin()}
-        {include file='captcha_js.tpl'}
+        {include file='captcha/js.tpl'}
     {/if}
 
     {include file='user/footer.tpl'}
